@@ -90,6 +90,9 @@ ruff check --no-cache .
 4) Ver resumo: Tomadas: 1 | Pendentes: 1 | Atrasadas: 0
 ```
 
+### Print da interface
+![Tela inicial do DoseCerta](assets/dosecerta-home.png)
+
 ## Versionamento semantico
 Versao atual: `1.0.0`.
 A versao tambem esta declarada em `VERSION` e `pyproject.toml`.
@@ -99,3 +102,9 @@ LUCCA DOS SANTOS CAMPELO SERPA
 
 ## Link do repositorio publico
 https://github.com/luccacampelo/dose-certa
+
+## Fluxo de colaboracao (exemplo)
+1. Criar branch de feature a partir da `main`.
+2. Implementar a melhoria e validar com lint e testes.
+3. Abrir Pull Request para revisao.
+4. Fazer merge na `main` apos aprovacao.
