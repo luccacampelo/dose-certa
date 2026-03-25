@@ -14,6 +14,10 @@ if __package__ in {None, ""}:
     if str(src_path) not in sys.path:
         sys.path.insert(0, str(src_path))
 
+from dose_certa.alarm_links import (  # noqa: E402
+    build_alarm_message,
+    build_android_set_alarm_intent,
+)
 from dose_certa.service import (  # noqa: E402
     STATUS_LATE,
     STATUS_PENDING,
@@ -194,6 +198,69 @@ def _render_daily_panel(database: dict[str, list[dict[str, Any]]]) -> None:
                     st.warning("Essa dose ja foi registrada anteriormente.")
 
 
+def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
+    st.subheader("Automacao de alarmes no celular")
+    st.caption(
+        "Gera atalhos para abrir o app Relogio do celular e salvar alarmes com horario, "
+        "titulo e observacoes do remedio."
+    )
+
+    active_medications = [
+        item for item in database.get("medications", []) if item.get("active", True)
+    ]
+    if not active_medications:
+        st.info("Cadastre um medicamento para gerar alarmes no celular.")
+        return
+
+    platform = st.radio(
+        "Sistema do celular",
+        options=["Android", "iPhone (iOS)"],
+        horizontal=True,
+    )
+
+    if platform != "Android":
+        st.warning(
+            "No iPhone, o navegador nao cria alarme no app Relogio automaticamente. "
+            "Use os dados exibidos para cadastrar no app Relogio ou no app Atalhos."
+        )
+        for medication in active_medications:
+            times = ", ".join(medication.get("times", []))
+            st.write(
+                f"- **{medication.get('name')}** ({medication.get('dosage')}) | Horarios: {times}"
+            )
+            notes = medication.get("notes", "")
+            if notes:
+                st.caption(f"Observacoes: {notes}")
+        return
+
+    st.info("Android: toque no botao para abrir o Relogio e confirmar o alarme.")
+    for medication in active_medications:
+        st.markdown(f"**{medication.get('name')}** ({medication.get('dosage')})")
+        notes = medication.get("notes", "")
+
+        for dose_time in medication.get("times", []):
+            message = build_alarm_message(
+                medication_name=str(medication.get("name", "")).strip(),
+                dosage=str(medication.get("dosage", "")).strip(),
+                dose_time=dose_time,
+                notes=notes,
+            )
+            intent_link = build_android_set_alarm_intent(
+                dose_time=dose_time,
+                message=message,
+                vibrate=True,
+                skip_ui=False,
+            )
+            st.link_button(
+                label=f"Criar alarme das {dose_time}",
+                url=intent_link,
+                use_container_width=True,
+            )
+            st.caption(message)
+
+        st.divider()
+
+
 def run() -> None:
     st.set_page_config(page_title="DoseCerta", layout="wide")
     _render_auth_gate()
@@ -217,6 +284,8 @@ def run() -> None:
 
     with col_right:
         _render_daily_panel(database)
+        st.divider()
+        _render_alarm_automation(database)
 
 
 if __name__ == "__main__":

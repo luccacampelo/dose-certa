@@ -27,6 +27,7 @@ Com isso, o fluxo fica claro para quem cuida e para quem toma o medicamento.
 - Listagem de medicamentos ativos
 - Painel diario com status de cada dose
 - Registro de dose tomada
+- Automacao de alarme no app Relogio (Android), incluindo titulo e observacoes
 - Persistencia local em arquivo JSON
 
 ## Tecnologias utilizadas
@@ -46,9 +47,11 @@ dose-certa/
 |- .streamlit/secrets.toml.example
 |- src/dose_certa/
 |  |- __init__.py
+|  |- alarm_links.py
 |  |- app.py
 |  |- service.py
 |  `- storage.py
+|- tests/test_alarm_links.py
 |- tests/test_service.py
 |- tests/test_storage.py
 |- README.md
@@ -76,6 +79,14 @@ streamlit run src/dose_certa/app.py
 ```
 
 Depois, abra no navegador o endereco exibido no terminal (normalmente `http://localhost:8501`).
+
+## Automacao de alarmes no celular
+1. Cadastre o remedio com horarios e observacoes.
+2. Abra a secao `Automacao de alarmes no celular`.
+3. Selecione o sistema do celular:
+   - `Android`: use os botoes para abrir o app Relogio com o alarme pre-preenchido.
+   - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
+4. Confirme o alarme no celular para ativar o toque.
 
 ## Rodar os testes
 ```powershell
