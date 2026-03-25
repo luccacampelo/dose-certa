@@ -90,6 +90,9 @@ ruff check --no-cache .
 4) Ver resumo: Tomadas: 1 | Pendentes: 1 | Atrasadas: 0
 ```
 
+### Print da interface
+![Tela inicial do DoseCerta](assets/dosecerta-home.png)
+
 ## Versionamento semantico
 Versao atual: `1.0.0`.
 A versao tambem esta declarada em `VERSION` e `pyproject.toml`.
