@@ -21,6 +21,13 @@ sem depender de navegador.
 3. Conecte um celular Android (com depuracao USB) ou inicie um emulador.
 4. Clique em `Run`.
 
+## Instalar APK sem Android Studio (via GitHub Actions)
+1. No GitHub, abra a aba `Actions`.
+2. Execute o workflow `Android Build` (botao `Run workflow`) ou use o ultimo build automatico.
+3. Baixe o artefato `dose-certa-android-debug-apk`.
+4. Extraia o zip e instale o `app-debug.apk` no celular Android.
+5. No Android, permita instalacao de fontes desconhecidas quando solicitado.
+
 ## Fluxo de uso
 1. Cadastre um medicamento com horarios (exemplo: `08:00, 20:00`).
 2. Na lista de medicamentos, toque em `Criar alarme das HH:MM`.

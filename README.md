@@ -93,6 +93,7 @@ Depois, abra no navegador o endereco exibido no terminal (normalmente `http://lo
    - `Android`: abra no Chrome do celular e use os links para abrir o app Relogio com o alarme pre-preenchido.
    - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
 4. Confirme o alarme no celular para ativar o toque.
+5. Observacao: esse fluxo web nao funciona em navegador de desktop.
 
 ## Versao Android nativa (Kotlin)
 Para criar alarmes no app Relogio sem depender de navegador, use a versao Android nativa:
@@ -100,6 +101,7 @@ Para criar alarmes no app Relogio sem depender de navegador, use a versao Androi
 - Pasta: `android-native`
 - Guia completo: `android-native/README.md`
 - Abordagem tecnica: `AlarmClock.ACTION_SET_ALARM` (intent oficial do Android)
+- Geracao de APK no GitHub Actions: workflow `Android Build`
 
 ## Rodar os testes
 ```powershell
