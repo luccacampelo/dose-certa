@@ -35,19 +35,23 @@ def build_android_set_alarm_intent(
     message: str,
     vibrate: bool = True,
     skip_ui: bool = False,
+    fallback_url: str = "https://dose-certa.streamlit.app/",
 ) -> str:
     hour, minute = parse_hour_minute(dose_time)
     encoded_message = quote(message, safe="")
+    encoded_fallback_url = quote(fallback_url, safe="")
     vibrate_literal = "true" if vibrate else "false"
     skip_ui_literal = "true" if skip_ui else "false"
 
     return (
-        "intent:#Intent;"
+        "intent://set_alarm/#Intent;"
         "action=android.intent.action.SET_ALARM;"
+        "category=android.intent.category.DEFAULT;"
         f"i.android.intent.extra.alarm.HOUR={hour};"
         f"i.android.intent.extra.alarm.MINUTES={minute};"
         f"S.android.intent.extra.alarm.MESSAGE={encoded_message};"
         f"B.android.intent.extra.alarm.VIBRATE={vibrate_literal};"
         f"B.android.intent.extra.alarm.SKIP_UI={skip_ui_literal};"
-        "end"
+        f"S.browser_fallback_url={encoded_fallback_url};"
+        "end;"
     )

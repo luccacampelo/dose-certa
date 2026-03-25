@@ -84,7 +84,7 @@ Depois, abra no navegador o endereco exibido no terminal (normalmente `http://lo
 1. Cadastre o remedio com horarios e observacoes.
 2. Abra a secao `Automacao de alarmes no celular`.
 3. Selecione o sistema do celular:
-   - `Android`: use os botoes para abrir o app Relogio com o alarme pre-preenchido.
+   - `Android`: abra no Chrome do celular e use os links para abrir o app Relogio com o alarme pre-preenchido.
    - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
 4. Confirme o alarme no celular para ativar o toque.
 

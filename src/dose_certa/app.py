@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hmac
+import html
 import os
 import sys
 from datetime import date, datetime
@@ -233,7 +234,13 @@ def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
                 st.caption(f"Observacoes: {notes}")
         return
 
-    st.info("Android: toque no botao para abrir o Relogio e confirmar o alarme.")
+    st.info(
+        "Android: abra no Chrome do celular e toque no link para abrir o Relogio. "
+        "Depois confirme o alarme."
+    )
+    st.caption(
+        "Se o aparelho bloquear abertura externa, use o texto exibido abaixo para cadastro manual."
+    )
     for medication in active_medications:
         st.markdown(f"**{medication.get('name')}** ({medication.get('dosage')})")
         notes = medication.get("notes", "")
@@ -250,11 +257,19 @@ def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
                 message=message,
                 vibrate=True,
                 skip_ui=False,
+                fallback_url="https://dose-certa.streamlit.app/",
             )
-            st.link_button(
-                label=f"Criar alarme das {dose_time}",
-                url=intent_link,
-                use_container_width=True,
+            link_label = html.escape(f"Abrir Relogio e criar alarme das {dose_time}")
+            safe_link = html.escape(intent_link, quote=True)
+            st.markdown(
+                (
+                    f'<a href="{safe_link}" target="_self" '
+                    'style="display:inline-block;padding:0.55rem 0.9rem;'
+                    'border:1px solid #d1d5db;border-radius:0.5rem;'
+                    'text-decoration:none;font-weight:600;">'
+                    f"{link_label}</a>"
+                ),
+                unsafe_allow_html=True,
             )
             st.caption(message)
 

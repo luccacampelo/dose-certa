@@ -50,10 +50,12 @@ def test_build_android_set_alarm_intent_has_required_fields() -> None:
         skip_ui=False,
     )
 
-    assert link.startswith("intent:#Intent;action=android.intent.action.SET_ALARM;")
+    assert link.startswith("intent://set_alarm/#Intent;action=android.intent.action.SET_ALARM;")
+    assert "category=android.intent.category.DEFAULT;" in link
     assert "i.android.intent.extra.alarm.HOUR=20;" in link
     assert "i.android.intent.extra.alarm.MINUTES=15;" in link
     assert "S.android.intent.extra.alarm.MESSAGE=Titulo%3A%20Remedio%20X;" in link
     assert "B.android.intent.extra.alarm.VIBRATE=true;" in link
     assert "B.android.intent.extra.alarm.SKIP_UI=false;" in link
-    assert link.endswith("end")
+    assert "S.browser_fallback_url=https%3A%2F%2Fdose-certa.streamlit.app%2F;" in link
+    assert link.endswith("end;")
