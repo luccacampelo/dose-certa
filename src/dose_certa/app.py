@@ -40,24 +40,27 @@ def _inject_custom_css() -> None:
         """
         <style>
         :root {
-            --dc-bg-a: #f5f8fc;
-            --dc-bg-b: #eff5fb;
-            --dc-bg-c: #f4faf7;
-            --dc-text: #13263d;
-            --dc-muted: #4f6074;
-            --dc-card: rgba(255, 255, 255, 0.96);
-            --dc-border: #d9e5f2;
+            --dc-bg-a: #edf4ff;
+            --dc-bg-b: #e9f2fd;
+            --dc-bg-c: #eff8f3;
+            --dc-text: #0f2947;
+            --dc-muted: #3f5871;
+            --dc-card: rgba(255, 255, 255, 0.99);
+            --dc-border: #c7d9ed;
             --dc-metric-bg: #ffffff;
-            --dc-metric-border: #d8e4f1;
-            --dc-shadow: 0 8px 18px rgba(9, 55, 101, 0.08);
-            --dc-hero-a: #0b4f8a;
-            --dc-hero-b: #0c7f6c;
-            --dc-link-bg: #eaf3fd;
-            --dc-link-border: #c2d6ea;
-            --dc-link-text: #0b4f8a;
-            --dc-link-bg-hover: #dfeeff;
-            --dc-link-border-hover: #97bcde;
-            --dc-link-text-hover: #083c69;
+            --dc-metric-border: #bfd3e9;
+            --dc-shadow: 0 10px 22px rgba(7, 49, 91, 0.12);
+            --dc-hero-a: #0d4f89;
+            --dc-hero-b: #107e6b;
+            --dc-link-bg: #e3f0ff;
+            --dc-link-border: #adcae9;
+            --dc-link-text: #0b4277;
+            --dc-link-bg-hover: #d5e8ff;
+            --dc-link-border-hover: #8eb4da;
+            --dc-link-text-hover: #08365f;
+            --dc-field-bg: #ffffff;
+            --dc-field-border: #a9c3dd;
+            --dc-field-text: #0f2947;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -80,6 +83,9 @@ def _inject_custom_css() -> None:
                 --dc-link-bg-hover: #1d3c5b;
                 --dc-link-border-hover: #4d75a0;
                 --dc-link-text-hover: #eff6ff;
+                --dc-field-bg: #15283f;
+                --dc-field-border: #375679;
+                --dc-field-text: #eaf2fc;
             }
         }
 
@@ -103,6 +109,9 @@ def _inject_custom_css() -> None:
             --dc-link-bg-hover: #1d3c5b;
             --dc-link-border-hover: #4d75a0;
             --dc-link-text-hover: #eff6ff;
+            --dc-field-bg: #15283f;
+            --dc-field-border: #375679;
+            --dc-field-text: #eaf2fc;
         }
 
         .stApp {
@@ -129,6 +138,28 @@ def _inject_custom_css() -> None:
 
         .stApp [data-testid="stCaptionContainer"] p {
             color: var(--dc-muted) !important;
+        }
+
+        .stApp [data-baseweb="input"],
+        .stApp [data-baseweb="select"] > div,
+        .stApp textarea {
+            background: var(--dc-field-bg) !important;
+            border: 1px solid var(--dc-field-border) !important;
+            color: var(--dc-field-text) !important;
+        }
+
+        .stApp [data-baseweb="input"] input,
+        .stApp textarea,
+        .stApp [data-baseweb="select"] input {
+            color: var(--dc-field-text) !important;
+            -webkit-text-fill-color: var(--dc-field-text) !important;
+            opacity: 1 !important;
+        }
+
+        .stApp [data-baseweb="input"] input::placeholder,
+        .stApp textarea::placeholder {
+            color: color-mix(in srgb, var(--dc-field-text) 62%, #7f95ad 38%) !important;
+            opacity: 1 !important;
         }
 
         .dc-hero {
