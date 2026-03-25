@@ -1,0 +1,12 @@
+﻿#!/usr/bin/env sh
+
+# Lightweight wrapper script. Requires gradle/wrapper/gradle-wrapper.jar.
+APP_HOME=$(cd "${0%/*}"; pwd)
+CLASSPATH="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+
+if [ ! -f "$CLASSPATH" ]; then
+  echo "Missing gradle-wrapper.jar. Open this project in Android Studio and click Sync to regenerate wrapper files."
+  exit 1
+fi
+
+exec java -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"

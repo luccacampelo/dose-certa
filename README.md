@@ -28,6 +28,7 @@ Com isso, o fluxo fica claro para quem cuida e para quem toma o medicamento.
 - Painel diario com status de cada dose
 - Registro de dose tomada
 - Automacao de alarme no app Relogio (Android), incluindo titulo e observacoes
+- Versao Android nativa (Kotlin) para criar alarmes no Relogio sem navegador
 - Persistencia local em arquivo JSON
 
 ## Tecnologias utilizadas
@@ -45,6 +46,11 @@ dose-certa/
 |- .github/workflows/secret-scan.yml
 |- .streamlit/config.toml
 |- .streamlit/secrets.toml.example
+|- android-native/
+|  |- app/
+|  |- build.gradle.kts
+|  |- settings.gradle.kts
+|  `- README.md
 |- src/dose_certa/
 |  |- __init__.py
 |  |- alarm_links.py
@@ -87,6 +93,13 @@ Depois, abra no navegador o endereco exibido no terminal (normalmente `http://lo
    - `Android`: abra no Chrome do celular e use os links para abrir o app Relogio com o alarme pre-preenchido.
    - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
 4. Confirme o alarme no celular para ativar o toque.
+
+## Versao Android nativa (Kotlin)
+Para criar alarmes no app Relogio sem depender de navegador, use a versao Android nativa:
+
+- Pasta: `android-native`
+- Guia completo: `android-native/README.md`
+- Abordagem tecnica: `AlarmClock.ACTION_SET_ALARM` (intent oficial do Android)
 
 ## Rodar os testes
 ```powershell
