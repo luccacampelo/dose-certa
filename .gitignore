@@ -15,21 +15,8 @@ venv/
 pytest-cache-files-*/
 
 # Streamlit cache and local data
-.streamlit/*
-!.streamlit/config.toml
-!.streamlit/secrets.toml.example
+.streamlit/
 data/*.json
-data/_test/
-logs/
-write-test.txt
-tmp*/
-
-# Secrets
-.env
-.env.*
-*.pem
-*.key
-*.p12
 
 # IDE and OS
 .idea/

@@ -13,7 +13,7 @@ STATUS_LATE = "Atrasada"
 
 
 class ValidationError(ValueError):
-    """Erro de validacao de regra de negocio."""
+    """Erro de validação de regra de negócio."""
 
 
 def _parse_time(value: str) -> time:
@@ -25,12 +25,12 @@ def parse_times(raw_times: str) -> list[str]:
     times = [item.strip() for item in normalized.split(",") if item.strip()]
 
     if not times:
-        raise ValidationError("Informe ao menos um horario no formato HH:MM.")
+        raise ValidationError("Informe ao menos um horário no formato HH:MM.")
 
     invalid = [item for item in times if not TIME_PATTERN.fullmatch(item)]
     if invalid:
         raise ValidationError(
-            f"Horarios invalidos: {', '.join(invalid)}. Use o formato HH:MM."
+            f"Horários inválidos: {', '.join(invalid)}. Use o formato HH:MM."
         )
 
     return sorted(set(times), key=_parse_time)
@@ -51,11 +51,11 @@ def create_medication(
     if not dosage:
         raise ValidationError("Informe a dosagem do medicamento.")
     if not times:
-        raise ValidationError("Informe ao menos um horario valido.")
+        raise ValidationError("Informe ao menos um horário válido.")
 
     for item in times:
         if not TIME_PATTERN.fullmatch(item):
-            raise ValidationError(f"Horario invalido: {item}")
+            raise ValidationError(f"Horário inválido: {item}")
 
     return {
         "id": str(uuid4()),
@@ -96,10 +96,10 @@ def record_dose(
     medications = database.get("medications", [])
     medication_exists = any(item.get("id") == medication_id for item in medications)
     if not medication_exists:
-        raise ValidationError("Medicamento nao encontrado.")
+        raise ValidationError("Medicamento não encontrado.")
 
     if not TIME_PATTERN.fullmatch(dose_time):
-        raise ValidationError("Horario da dose invalido.")
+        raise ValidationError("Horário da dose inválido.")
 
     logs = database.setdefault("dose_logs", [])
     dose_date_iso = dose_date.isoformat()

@@ -1,75 +1,58 @@
-﻿# DoseCerta
+# DoseCerta
 
-[![CI](https://github.com/luccacampelo/dose-certa/actions/workflows/ci.yml/badge.svg)](https://github.com/luccacampelo/dose-certa/actions/workflows/ci.yml)
-
-O DoseCerta nasceu de uma dor simples e muito comum: lembrar os horarios corretos dos remedios no dia a dia.
-A proposta do projeto e oferecer uma interface direta para registrar medicamentos, acompanhar doses e reduzir esquecimentos.
+Aplicação simples com interface GUI (web local) para ajudar no controle de horários de medicamentos,
+reduzindo esquecimentos e atrasos de doses em rotinas de cuidado.
 
 ## Problema real
-Em muitas casas, a rotina de medicacao depende de memoria, anotacoes soltas ou mensagens.
-Quando o cuidado fica concentrado em uma pessoa, e facil perder horario ou ficar na duvida se a dose ja foi tomada.
+Muitas pessoas idosas e cuidadores familiares enfrentam dificuldade para manter uma rotina correta de
+medicação. Esquecer uma dose ou tomar fora do horário pode prejudicar a saúde e aumentar riscos.
 
-## Proposta da solucao
-O aplicativo organiza medicamentos por horario e mostra, para cada dia, o que esta:
-- Pendente
-- Atrasado
-- Tomado
+## Proposta da solução
+O DoseCerta organiza os medicamentos cadastrados, mostra doses do dia com status e permite registrar
+quando uma dose foi tomada. Assim, o usuário visualiza rapidamente o que está pendente, atrasado ou
+concluído.
 
-Com isso, o fluxo fica claro para quem cuida e para quem toma o medicamento.
-
-## Publico-alvo
+## Público-alvo
 - Cuidadores familiares
-- Pessoas idosas com rotina de medicacao
-- Pessoas com uso continuo de remedios
+- Pessoas idosas com rotina de medicação
+- Pessoas com uso contínuo de remédios
 
 ## Funcionalidades principais
-- Cadastro de medicamento (nome, dosagem, horarios e observacoes)
+- Cadastro de medicamento (nome, dosagem, horários e observações)
 - Listagem de medicamentos ativos
-- Painel diario com status de cada dose
+- Visualização diária de doses
+- Status por dose: `Pendente`, `Atrasada`, `Tomada`
 - Registro de dose tomada
-- Automacao de alarme no app Relogio (Android), incluindo titulo e observacoes
-- Versao Android nativa (Kotlin) para criar alarmes no Relogio sem navegador
-- Persistencia local em arquivo JSON
+- Armazenamento local em arquivo JSON
 
 ## Tecnologias utilizadas
 - Python 3.12+
 - Streamlit (GUI web local)
 - Pytest (testes automatizados)
-- Ruff (lint / analise estatica)
+- Ruff (lint/análise estática)
 - GitHub Actions (CI)
 
 ## Estrutura do projeto
 ```text
 dose-certa/
-|- .github/workflows/ci.yml
-|- .github/workflows/repo-guard.yml
-|- .github/workflows/secret-scan.yml
-|- .streamlit/config.toml
-|- .streamlit/secrets.toml.example
-|- android-native/
-|  |- app/
-|  |- build.gradle.kts
-|  |- settings.gradle.kts
-|  `- README.md
-|- src/dose_certa/
-|  |- __init__.py
-|  |- alarm_links.py
-|  |- app.py
-|  |- service.py
-|  `- storage.py
-|- tests/test_alarm_links.py
-|- tests/test_service.py
-|- tests/test_storage.py
-|- README.md
-|- SECURITY.md
-|- pyproject.toml
-|- requirements.txt
-|- requirements-dev.txt
-|- VERSION
-`- LICENSE
+├── .github/workflows/ci.yml
+├── src/dose_certa/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── service.py
+│   └── storage.py
+├── tests/test_service.py
+├── README.md
+├── pyproject.toml
+├── requirements.txt
+├── requirements-dev.txt
+├── VERSION
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── LICENSE
 ```
 
-## Instalacao
+## Instalação
 ### Windows (PowerShell)
 ```powershell
 python -m venv .venv
@@ -78,31 +61,13 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements-dev.txt
 ```
 
-## Execucao da aplicacao
+## Execução da aplicação
 ```powershell
 $env:PYTHONPATH = "src"
 streamlit run src/dose_certa/app.py
 ```
 
-Depois, abra no navegador o endereco exibido no terminal (normalmente `http://localhost:8501`).
-
-## Automacao de alarmes no celular
-1. Cadastre o remedio com horarios e observacoes.
-2. Abra a secao `Automacao de alarmes no celular`.
-3. Selecione o sistema do celular:
-   - `Android`: abra no Chrome do celular e use os links para abrir o app Relogio com o alarme pre-preenchido.
-   - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
-4. Confirme o alarme no celular para ativar o toque.
-5. Observacao: esse fluxo web nao funciona em navegador de desktop.
-6. No Android, ative `Modo direto` para tentar criar alarme sem abrir tela (depende do aparelho/app Relogio).
-
-## Versao Android nativa (Kotlin)
-Para criar alarmes no app Relogio sem depender de navegador, use a versao Android nativa:
-
-- Pasta: `android-native`
-- Guia completo: `android-native/README.md`
-- Abordagem tecnica: `AlarmClock.ACTION_SET_ALARM` (intent oficial do Android)
-- Geracao de APK no GitHub Actions: workflow `Android Build`
+Depois, abra no navegador o endereço exibido no terminal (normalmente `http://localhost:8501`).
 
 ## Rodar os testes
 ```powershell
@@ -115,23 +80,19 @@ pytest -q -p no:cacheprovider
 ruff check --no-cache .
 ```
 
-## Evidencia de funcionamento (exemplo)
+## Exemplo de uso (evidência)
 ```text
-1) Cadastrar "Losartana 50mg" com horarios 08:00, 20:00
-2) Abrir painel diario
+1) Cadastrar "Losartana 50mg" com horários 08:00, 20:00
+2) Abrir painel diário
 3) Marcar dose de 08:00 como tomada
 4) Ver resumo: Tomadas: 1 | Pendentes: 1 | Atrasadas: 0
 ```
 
-### Print da interface
-![Tela inicial do DoseCerta](assets/dosecerta-home.png)
-
-## Versionamento semantico
-Versao atual: `1.0.0`.
-A versao tambem esta declarada em `VERSION` e `pyproject.toml`.
+## Versionamento semântico
+Versão atual: `1.0.0` (também registrada no arquivo `VERSION` e em `pyproject.toml`).
 
 ## Autor
 LUCCA DOS SANTOS CAMPELO SERPA
 
-## Link do repositorio publico
-https://github.com/luccacampelo/dose-certa
+## Link do repositório público
+`https://github.com/lucca_campelo/dose-certa`

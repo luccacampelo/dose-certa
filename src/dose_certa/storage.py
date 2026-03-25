@@ -19,16 +19,16 @@ def load_database(path: Path) -> dict[str, list[dict[str, Any]]]:
         try:
             data = json.load(file)
         except json.JSONDecodeError as error:
-            raise ValueError("Arquivo de dados invalido.") from error
+            raise ValueError("Arquivo de dados inválido.") from error
 
     if not isinstance(data, dict):
-        raise ValueError("Arquivo de dados invalido: estrutura principal precisa ser objeto.")
+        raise ValueError("Arquivo de dados inválido: estrutura principal precisa ser objeto.")
 
     medications = data.get("medications", [])
     dose_logs = data.get("dose_logs", [])
 
     if not isinstance(medications, list) or not isinstance(dose_logs, list):
-        raise ValueError("Arquivo de dados invalido: listas esperadas nao encontradas.")
+        raise ValueError("Arquivo de dados inválido: listas esperadas não encontradas.")
 
     return {"medications": medications, "dose_logs": dose_logs}
 
