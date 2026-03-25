@@ -130,5 +130,6 @@ Isso gera um link publico no formato `https://<nome>.streamlit.app`.
 1. Criar branch por funcionalidade/correcao.
 2. Rodar `ruff` e `pytest` antes de subir.
 3. Abrir Pull Request e revisar diff.
-4. O workflow `repo-guard` bloqueia arquivos sensiveis/temporarios no Git.
-5. Dados de execucao ficam fora de versionamento (`data/*.json` e `data/_test/`).
+4. O workflow `repo-guard` bloqueia arquivos sensiveis/temporarios e padroes comuns de segredo.
+5. O workflow `secret-scan` (Gitleaks) faz varredura automatica de segredos.
+6. Dados de execucao ficam fora de versionamento (`data/*.json` e `data/_test/`).

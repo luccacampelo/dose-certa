@@ -23,3 +23,15 @@ jobs:
             exit 1
           fi
           echo "Repository guard checks passed."
+
+      - name: Block common secret patterns in tracked files
+        run: |
+          set -e
+          patterns='(ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|-----BEGIN (RSA|EC|DSA|OPENSSH|PRIVATE) KEY-----)'
+          hits=$(git grep -nE "$patterns" -- . ':!README.md' ':!LICENSE' ':!CHANGELOG.md' || true)
+          if [ -n "$hits" ]; then
+            echo "Potential secret patterns detected:"
+            echo "$hits"
+            exit 1
+          fi
+          echo "No common secret patterns detected."
