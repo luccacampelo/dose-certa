@@ -18,7 +18,15 @@ pytest-cache-files-*/
 .streamlit/
 data/*.json
 data/_test/
+logs/
 write-test.txt
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
 
 # IDE and OS
 .idea/

@@ -40,13 +40,17 @@ Com isso, o fluxo fica claro para quem cuida e para quem toma o medicamento.
 ```text
 dose-certa/
 |- .github/workflows/ci.yml
+|- .github/workflows/repo-guard.yml
+|- .streamlit/config.toml
 |- src/dose_certa/
 |  |- __init__.py
 |  |- app.py
 |  |- service.py
 |  `- storage.py
 |- tests/test_service.py
+|- tests/test_storage.py
 |- README.md
+|- SECURITY.md
 |- pyproject.toml
 |- requirements.txt
 |- requirements-dev.txt
@@ -103,8 +107,28 @@ LUCCA DOS SANTOS CAMPELO SERPA
 ## Link do repositorio publico
 https://github.com/luccacampelo/dose-certa
 
+## Deploy publico seguro (recomendado)
+Para uso publico por outras pessoas, publique no Streamlit Community Cloud (ambiente isolado).
+
+1. Acesse: https://share.streamlit.io/
+2. Clique em `New app`
+3. Selecione:
+   - Repository: `luccacampelo/dose-certa`
+   - Branch: `main`
+   - Main file path: `src/dose_certa/app.py`
+4. Clique em `Deploy`
+
+Isso gera um link publico no formato `https://<nome>.streamlit.app`.
+
 ## Fluxo de colaboracao (exemplo)
 1. Criar branch de feature a partir da `main`.
 2. Implementar a melhoria e validar com lint e testes.
 3. Abrir Pull Request para revisao.
 4. Fazer merge na `main` apos aprovacao.
+
+## Manutencao evolutiva com seguranca
+1. Criar branch por funcionalidade/correcao.
+2. Rodar `ruff` e `pytest` antes de subir.
+3. Abrir Pull Request e revisar diff.
+4. O workflow `repo-guard` bloqueia arquivos sensiveis/temporarios no Git.
+5. Dados de execucao ficam fora de versionamento (`data/*.json` e `data/_test/`).
