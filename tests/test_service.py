@@ -11,6 +11,8 @@ from dose_certa.service import (
     ValidationError,
     add_medication,
     create_medication,
+    daily_summary,
+    deactivate_medication,
     list_daily_doses,
     parse_times,
     record_dose,
@@ -25,6 +27,11 @@ def test_parse_times_sorts_and_deduplicates() -> None:
 def test_parse_times_rejects_invalid_input() -> None:
     with pytest.raises(ValidationError):
         parse_times("08:00, 25:00")
+
+
+def test_create_medication_rejects_empty_name() -> None:
+    with pytest.raises(ValidationError):
+        create_medication(name="   ", dosage="50mg", times=["08:00"])
 
 
 def test_record_dose_rejects_duplicate_registration() -> None:
@@ -50,6 +57,17 @@ def test_record_dose_rejects_duplicate_registration() -> None:
     assert created_first is True
     assert created_second is False
     assert len(database["dose_logs"]) == 1
+
+
+def test_record_dose_rejects_unknown_medication() -> None:
+    database = empty_database()
+    with pytest.raises(ValidationError):
+        record_dose(
+            database=database,
+            medication_id="id-inexistente",
+            dose_date=date(2026, 3, 25),
+            dose_time="08:00",
+        )
 
 
 def test_list_daily_doses_handles_pending_late_and_taken() -> None:
@@ -83,3 +101,48 @@ def test_list_daily_doses_handles_pending_late_and_taken() -> None:
     by_time_23h = {dose["time"]: dose["status"] for dose in doses_23h}
 
     assert by_time_23h["22:00"] == STATUS_LATE
+
+
+def test_deactivate_medication_hides_doses_from_daily_list() -> None:
+    database = empty_database()
+    medication = create_medication(name="Vitamina D", dosage="1 comprimido", times=["09:00"])
+    add_medication(database, medication)
+
+    assert deactivate_medication(database, medication["id"]) is True
+
+    doses = list_daily_doses(
+        database=database,
+        target_date=date(2026, 3, 25),
+        now=datetime(2026, 3, 25, 9, 30),
+    )
+    assert doses == []
+
+
+def test_daily_summary_counts_each_status() -> None:
+    database = empty_database()
+    medication = create_medication(
+        name="Amoxicilina",
+        dosage="500mg",
+        times=["08:00", "12:00", "20:00"],
+    )
+    add_medication(database, medication)
+
+    record_dose(
+        database=database,
+        medication_id=medication["id"],
+        dose_date=date(2026, 3, 25),
+        dose_time="08:00",
+        taken_at=datetime(2026, 3, 25, 8, 5),
+    )
+
+    doses = list_daily_doses(
+        database=database,
+        target_date=date(2026, 3, 25),
+        now=datetime(2026, 3, 25, 13, 0),
+    )
+    summary = daily_summary(doses)
+
+    assert summary["total"] == 3
+    assert summary[STATUS_TAKEN] == 1
+    assert summary[STATUS_LATE] == 1
+    assert summary[STATUS_PENDING] == 1

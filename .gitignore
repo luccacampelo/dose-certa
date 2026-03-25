@@ -17,6 +17,8 @@ pytest-cache-files-*/
 # Streamlit cache and local data
 .streamlit/
 data/*.json
+data/_test/
+write-test.txt
 
 # IDE and OS
 .idea/
