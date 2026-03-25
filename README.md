@@ -119,38 +119,3 @@ LUCCA DOS SANTOS CAMPELO SERPA
 
 ## Link do repositorio publico
 https://github.com/luccacampelo/dose-certa
-
-## Deploy publico seguro (recomendado)
-Para uso publico por outras pessoas, publique no Streamlit Community Cloud (ambiente isolado).
-
-1. Acesse: https://share.streamlit.io/
-2. Clique em `New app`
-3. Selecione:
-   - Repository: `luccacampelo/dose-certa`
-   - Branch: `main`
-   - Main file path: `src/dose_certa/app.py`
-4. Em `Advanced settings`, adicione em `Secrets`:
-   - `app_password = \"uma-senha-forte\"`
-5. Clique em `Deploy`
-
-Isso gera um link publico no formato `https://<nome>.streamlit.app`.
-So quem tiver a senha consegue entrar.
-
-## Configuracao de producao (resumo)
-- Autenticacao: ativa quando `app_password` for definido em secrets/env.
-- Dados: por padrao em `data/dose_certa.json`.
-- Opcional em deploy: configurar `dose_certa_data_file` para um caminho persistente do host.
-
-## Fluxo de colaboracao (exemplo)
-1. Criar branch de feature a partir da `main`.
-2. Implementar a melhoria e validar com lint e testes.
-3. Abrir Pull Request para revisao.
-4. Fazer merge na `main` apos aprovacao.
-
-## Manutencao evolutiva com seguranca
-1. Criar branch por funcionalidade/correcao.
-2. Rodar `ruff` e `pytest` antes de subir.
-3. Abrir Pull Request e revisar diff.
-4. O workflow `repo-guard` bloqueia arquivos sensiveis/temporarios e padroes comuns de segredo.
-5. O workflow `secret-scan` (Gitleaks) faz varredura automatica de segredos.
-6. Dados de execucao ficam fora de versionamento (`data/*.json` e `data/_test/`).
