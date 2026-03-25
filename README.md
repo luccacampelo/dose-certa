@@ -41,7 +41,9 @@ Com isso, o fluxo fica claro para quem cuida e para quem toma o medicamento.
 dose-certa/
 |- .github/workflows/ci.yml
 |- .github/workflows/repo-guard.yml
+|- .github/workflows/secret-scan.yml
 |- .streamlit/config.toml
+|- .streamlit/secrets.toml.example
 |- src/dose_certa/
 |  |- __init__.py
 |  |- app.py
@@ -116,9 +118,17 @@ Para uso publico por outras pessoas, publique no Streamlit Community Cloud (ambi
    - Repository: `luccacampelo/dose-certa`
    - Branch: `main`
    - Main file path: `src/dose_certa/app.py`
-4. Clique em `Deploy`
+4. Em `Advanced settings`, adicione em `Secrets`:
+   - `app_password = \"uma-senha-forte\"`
+5. Clique em `Deploy`
 
 Isso gera um link publico no formato `https://<nome>.streamlit.app`.
+So quem tiver a senha consegue entrar.
+
+## Configuracao de producao (resumo)
+- Autenticacao: ativa quando `app_password` for definido em secrets/env.
+- Dados: por padrao em `data/dose_certa.json`.
+- Opcional em deploy: configurar `dose_certa_data_file` para um caminho persistente do host.
 
 ## Fluxo de colaboracao (exemplo)
 1. Criar branch de feature a partir da `main`.

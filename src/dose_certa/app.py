@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hmac
+import os
 import sys
 from datetime import date, datetime
 from pathlib import Path
@@ -27,27 +29,78 @@ from dose_certa.service import (  # noqa: E402
 )
 from dose_certa.storage import load_database, save_database  # noqa: E402
 
-DATA_FILE = Path(__file__).resolve().parents[2] / "data" / "dose_certa.json"
+
+def _read_secret_value(key: str) -> str:
+    try:
+        value = st.secrets.get(key, "")
+    except Exception:
+        value = ""
+    return str(value).strip()
+
+
+def _app_password() -> str:
+    return _read_secret_value("app_password") or os.getenv("DOSE_CERTA_APP_PASSWORD", "").strip()
+
+
+def _resolve_data_file() -> Path:
+    default_path = Path(__file__).resolve().parents[2] / "data" / "dose_certa.json"
+    configured_path = (
+        _read_secret_value("dose_certa_data_file")
+        or os.getenv("DOSE_CERTA_DATA_FILE", "").strip()
+    )
+    if not configured_path:
+        return default_path
+    return Path(configured_path).expanduser()
 
 
 def _load_data() -> dict[str, list[dict[str, Any]]]:
-    return load_database(DATA_FILE)
+    return load_database(_resolve_data_file())
 
 
 def _save_data(database: dict[str, list[dict[str, Any]]]) -> None:
-    save_database(DATA_FILE, database)
+    try:
+        save_database(_resolve_data_file(), database)
+    except OSError as error:
+        raise ValueError("Falha ao salvar dados no armazenamento configurado.") from error
+
+
+def _render_auth_gate() -> None:
+    password = _app_password()
+    if not password:
+        return
+
+    is_authenticated = st.session_state.get("authenticated", False)
+    if is_authenticated:
+        with st.sidebar:
+            st.caption("Ambiente protegido")
+            if st.button("Sair"):
+                st.session_state["authenticated"] = False
+                st.rerun()
+        return
+
+    st.title("DoseCerta - acesso restrito")
+    st.caption("Informe a senha para entrar no ambiente de testes.")
+
+    typed_password = st.text_input("Senha", type="password")
+    if st.button("Entrar", type="primary"):
+        if hmac.compare_digest(typed_password, password):
+            st.session_state["authenticated"] = True
+            st.rerun()
+        st.error("Senha invalida.")
+
+    st.stop()
 
 
 def _render_registration_form(database: dict[str, list[dict[str, Any]]]) -> None:
-    st.subheader("Cadastro de Medicamento")
+    st.subheader("Cadastro de medicamento")
     with st.form("medication-form", clear_on_submit=True):
         name = st.text_input("Nome do medicamento")
         dosage = st.text_input("Dosagem")
         times_raw = st.text_input(
-            "Horários (HH:MM, separados por vírgula)",
+            "Horarios (HH:MM, separados por virgula)",
             placeholder="08:00, 20:00",
         )
-        notes = st.text_area("Observações (opcional)")
+        notes = st.text_area("Observacoes (opcional)")
         submitted = st.form_submit_button("Salvar medicamento")
 
     if not submitted:
@@ -65,7 +118,7 @@ def _render_registration_form(database: dict[str, list[dict[str, Any]]]) -> None
 
 
 def _render_medications(database: dict[str, list[dict[str, Any]]]) -> None:
-    st.subheader("Medicamentos Ativos")
+    st.subheader("Medicamentos ativos")
     active_medications = [
         item for item in database.get("medications", []) if item.get("active", True)
     ]
@@ -80,10 +133,10 @@ def _render_medications(database: dict[str, list[dict[str, Any]]]) -> None:
             times = ", ".join(medication.get("times", []))
             notes = medication.get("notes", "")
             st.write(
-                f"**{medication.get('name')}** - {medication.get('dosage')} | Horários: {times}"
+                f"**{medication.get('name')}** - {medication.get('dosage')} | Horarios: {times}"
             )
             if notes:
-                st.caption(f"Observações: {notes}")
+                st.caption(f"Observacoes: {notes}")
         with col_action:
             if st.button("Desativar", key=f"deactivate-{medication.get('id')}"):
                 deactivate_medication(database, medication.get("id"))
@@ -92,8 +145,8 @@ def _render_medications(database: dict[str, list[dict[str, Any]]]) -> None:
 
 
 def _render_daily_panel(database: dict[str, list[dict[str, Any]]]) -> None:
-    st.subheader("Painel Diário de Doses")
-    selected_date = st.date_input("Data de referência", value=date.today(), format="DD/MM/YYYY")
+    st.subheader("Painel diario de doses")
+    selected_date = st.date_input("Data de referencia", value=date.today(), format="DD/MM/YYYY")
 
     doses = list_daily_doses(database=database, target_date=selected_date, now=datetime.now())
     summary = daily_summary(doses)
@@ -120,7 +173,7 @@ def _render_daily_panel(database: dict[str, list[dict[str, Any]]]) -> None:
                 continue
 
             if selected_date > date.today():
-                st.caption("A marcação de dose fica disponível a partir da data da medicação.")
+                st.caption("Marcacao so disponivel no dia da medicacao.")
                 continue
 
             if st.button(
@@ -138,11 +191,13 @@ def _render_daily_panel(database: dict[str, list[dict[str, Any]]]) -> None:
                     st.success("Dose registrada com sucesso.")
                     st.rerun()
                 else:
-                    st.warning("Essa dose já foi registrada anteriormente.")
+                    st.warning("Essa dose ja foi registrada anteriormente.")
 
 
 def run() -> None:
     st.set_page_config(page_title="DoseCerta", layout="wide")
+    _render_auth_gate()
+
     st.title("DoseCerta")
     st.caption("Controle simples de medicamentos para apoiar rotinas de cuidado.")
 

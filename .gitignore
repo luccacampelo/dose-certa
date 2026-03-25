@@ -17,10 +17,12 @@ pytest-cache-files-*/
 # Streamlit cache and local data
 .streamlit/*
 !.streamlit/config.toml
+!.streamlit/secrets.toml.example
 data/*.json
 data/_test/
 logs/
 write-test.txt
+tmp*/
 
 # Secrets
 .env
