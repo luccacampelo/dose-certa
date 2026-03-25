@@ -16,4 +16,3 @@ Registro das mudancas relevantes do projeto.
 ### Changed
 - README reescrito para linguagem mais natural e objetiva
 - Inclusao de badge de CI no README
-- Arquivo ENTREGA_PDF.md com texto pronto para gerar o PDF da plataforma
