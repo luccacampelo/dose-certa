@@ -95,4 +95,4 @@ Versão atual: `1.0.0` (também registrada no arquivo `VERSION` e em `pyproject.
 LUCCA DOS SANTOS CAMPELO SERPA
 
 ## Link do repositório público
-`https://github.com/lucca_campelo/dose-certa`
+`https://github.com/luccacampelo/dose-certa`
