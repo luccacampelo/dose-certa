@@ -39,11 +39,78 @@ def _inject_custom_css() -> None:
     st.markdown(
         """
         <style>
+        :root {
+            --dc-bg-a: #f5f8fc;
+            --dc-bg-b: #eff5fb;
+            --dc-bg-c: #f4faf7;
+            --dc-text: #13263d;
+            --dc-muted: #4f6074;
+            --dc-card: rgba(255, 255, 255, 0.96);
+            --dc-border: #d9e5f2;
+            --dc-metric-bg: #ffffff;
+            --dc-metric-border: #d8e4f1;
+            --dc-shadow: 0 8px 18px rgba(9, 55, 101, 0.08);
+            --dc-hero-a: #0b4f8a;
+            --dc-hero-b: #0c7f6c;
+            --dc-link-bg: #eaf3fd;
+            --dc-link-border: #c2d6ea;
+            --dc-link-text: #0b4f8a;
+            --dc-link-bg-hover: #dfeeff;
+            --dc-link-border-hover: #97bcde;
+            --dc-link-text-hover: #083c69;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --dc-bg-a: #0b1422;
+                --dc-bg-b: #0f1c30;
+                --dc-bg-c: #112539;
+                --dc-text: #e9f1fb;
+                --dc-muted: #b8c9dd;
+                --dc-card: rgba(16, 29, 48, 0.94);
+                --dc-border: #2a3e59;
+                --dc-metric-bg: #12263d;
+                --dc-metric-border: #2c4766;
+                --dc-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+                --dc-hero-a: #145b96;
+                --dc-hero-b: #117e69;
+                --dc-link-bg: #17324d;
+                --dc-link-border: #365879;
+                --dc-link-text: #d9eaff;
+                --dc-link-bg-hover: #1d3c5b;
+                --dc-link-border-hover: #4d75a0;
+                --dc-link-text-hover: #eff6ff;
+            }
+        }
+
+        html[data-theme="dark"],
+        body[data-theme="dark"] {
+            --dc-bg-a: #0b1422;
+            --dc-bg-b: #0f1c30;
+            --dc-bg-c: #112539;
+            --dc-text: #e9f1fb;
+            --dc-muted: #b8c9dd;
+            --dc-card: rgba(16, 29, 48, 0.94);
+            --dc-border: #2a3e59;
+            --dc-metric-bg: #12263d;
+            --dc-metric-border: #2c4766;
+            --dc-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+            --dc-hero-a: #145b96;
+            --dc-hero-b: #117e69;
+            --dc-link-bg: #17324d;
+            --dc-link-border: #365879;
+            --dc-link-text: #d9eaff;
+            --dc-link-bg-hover: #1d3c5b;
+            --dc-link-border-hover: #4d75a0;
+            --dc-link-text-hover: #eff6ff;
+        }
+
         .stApp {
             background:
                 radial-gradient(circle at 0% 0%, rgba(11, 79, 138, 0.11), transparent 38%),
                 radial-gradient(circle at 100% 0%, rgba(6, 120, 104, 0.10), transparent 36%),
-                linear-gradient(180deg, #f5f8fc 0%, #eff5fb 55%, #f4faf7 100%);
+                linear-gradient(180deg, var(--dc-bg-a) 0%, var(--dc-bg-b) 55%, var(--dc-bg-c) 100%);
+            color: var(--dc-text);
         }
 
         .main .block-container {
@@ -52,8 +119,20 @@ def _inject_custom_css() -> None:
             padding-bottom: 2rem;
         }
 
+        .stApp h1, .stApp h2, .stApp h3 {
+            color: var(--dc-text) !important;
+        }
+
+        .stApp p, .stApp label, .stApp [data-testid="stMarkdownContainer"], .stApp li {
+            color: var(--dc-text);
+        }
+
+        .stApp [data-testid="stCaptionContainer"] p {
+            color: var(--dc-muted) !important;
+        }
+
         .dc-hero {
-            background: linear-gradient(132deg, #0b4f8a 0%, #0c7f6c 100%);
+            background: linear-gradient(132deg, var(--dc-hero-a) 0%, var(--dc-hero-b) 100%);
             color: #ffffff;
             border-radius: 16px;
             padding: 1rem 1.1rem;
@@ -74,16 +153,24 @@ def _inject_custom_css() -> None:
 
         div[data-testid="stVerticalBlockBorderWrapper"] {
             border-radius: 14px;
-            border-color: #d9e5f2;
-            background: rgba(255, 255, 255, 0.96);
+            border-color: var(--dc-border);
+            background: var(--dc-card);
         }
 
         div[data-testid="stMetric"] {
-            background: #ffffff;
-            border: 1px solid #d8e4f1;
+            background: var(--dc-metric-bg);
+            border: 1px solid var(--dc-metric-border);
             border-radius: 12px;
             padding: 0.35rem 0.6rem;
-            box-shadow: 0 8px 18px rgba(9, 55, 101, 0.08);
+            box-shadow: var(--dc-shadow);
+        }
+
+        div[data-testid="stMetricLabel"] {
+            color: var(--dc-muted) !important;
+        }
+
+        div[data-testid="stMetricValue"] {
+            color: var(--dc-text) !important;
         }
 
         .dc-alarm-link {
@@ -92,9 +179,9 @@ def _inject_custom_css() -> None:
             text-align: center;
             padding: 0.55rem 0.9rem;
             border-radius: 10px;
-            border: 1px solid #c2d6ea;
-            background: #eaf3fd;
-            color: #0b4f8a;
+            border: 1px solid var(--dc-link-border);
+            background: var(--dc-link-bg);
+            color: var(--dc-link-text);
             text-decoration: none;
             font-weight: 700;
             margin-top: 0.15rem;
@@ -103,9 +190,9 @@ def _inject_custom_css() -> None:
         }
 
         .dc-alarm-link:hover {
-            background: #dfeeff;
-            border-color: #97bcde;
-            color: #083c69;
+            background: var(--dc-link-bg-hover);
+            border-color: var(--dc-link-border-hover);
+            color: var(--dc-link-text-hover);
         }
         </style>
         """,
@@ -335,10 +422,8 @@ def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
             with st.container(border=True):
                 times = ", ".join(medication.get("times", []))
                 st.write(
-                    
-                        f"- **{medication.get('name')}** ({medication.get('dosage')}) "
-                        f"| Horarios: {times}"
-                    
+                    f"- **{medication.get('name')}** ({medication.get('dosage')}) "
+                    f"| Horarios: {times}"
                 )
                 notes = medication.get("notes", "")
                 if notes:
