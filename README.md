@@ -51,8 +51,6 @@ dose-certa/
 |- requirements.txt
 |- requirements-dev.txt
 |- VERSION
-|- CHANGELOG.md
-|- CONTRIBUTING.md
 `- LICENSE
 ```
 
