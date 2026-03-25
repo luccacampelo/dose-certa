@@ -96,3 +96,6 @@ LUCCA DOS SANTOS CAMPELO SERPA
 
 ## Link do repositório público
 `https://github.com/lucca_campelo/dose-certa`
+
+## Print da interface
+![Tela inicial do DoseCerta](assets/dosecerta-home.png)
