@@ -461,9 +461,18 @@ def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
                     st.caption(f"Observacoes: {notes}")
         return
 
+    direct_mode = st.toggle(
+        "Modo direto (tentar criar sem abrir tela do Relogio)",
+        value=True,
+        help=(
+            "Usa o parametro EXTRA_SKIP_UI=true. Em alguns celulares funciona 100%, "
+            "em outros o sistema pode abrir tela de confirmacao."
+        ),
+    )
+
     st.info(
-        "Android: abra no Chrome do celular e toque no link para abrir o Relogio. "
-        "Depois confirme o alarme."
+        "Android: abra no Chrome do celular e toque no link. "
+        "Com modo direto ativo, o sistema tenta criar automaticamente."
     )
 
     for medication in active_medications:
@@ -482,7 +491,7 @@ def _render_alarm_automation(database: dict[str, list[dict[str, Any]]]) -> None:
                     dose_time=dose_time,
                     message=message,
                     vibrate=True,
-                    skip_ui=False,
+                    skip_ui=direct_mode,
                     fallback_url="https://dose-certa.streamlit.app/",
                 )
                 link_label = html.escape(f"Abrir Relogio e criar alarme das {dose_time}")

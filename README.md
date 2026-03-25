@@ -94,6 +94,7 @@ Depois, abra no navegador o endereco exibido no terminal (normalmente `http://lo
    - `iPhone (iOS)`: o app mostra os dados para cadastro manual no Relogio/Atalhos.
 4. Confirme o alarme no celular para ativar o toque.
 5. Observacao: esse fluxo web nao funciona em navegador de desktop.
+6. No Android, ative `Modo direto` para tentar criar alarme sem abrir tela (depende do aparelho/app Relogio).
 
 ## Versao Android nativa (Kotlin)
 Para criar alarmes no app Relogio sem depender de navegador, use a versao Android nativa:
